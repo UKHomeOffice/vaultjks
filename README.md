@@ -26,5 +26,5 @@ $ docker run -ti \
   -e VAULT_ADDR=https://vault:8200 \
   -e VAULT_TOKEN=44eecf54-5b01-4bd5-a8c4-f4032b9e7e10 \
   -v /keystore:/data \
-  quay.io/ukhomeofficedigital/vaultjks
+  quay.io/ukhomeofficedigital/vaultjks:v0.0.1
 ```
