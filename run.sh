@@ -3,6 +3,10 @@
 [[ -n ${DEBUG} ]] && set -o xtrace
 set -o pipefail
 
+if [[ -f ${VAULT_AUTH_FILE} ]]; then
+  source ${VAULT_AUTH_FILE}
+fi
+
 if [[ ! -n ${VAULT_TOKEN} ]]; then
   : ${VAULT_USER:?}
   : ${VAULT_PASSWORD:?}

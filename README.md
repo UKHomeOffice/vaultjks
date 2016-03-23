@@ -9,6 +9,8 @@ A working vault server and PKI backend mounted with long enough TTLs.
 
 ### Configuration
 - `VAULT_ADDR` - Vault address. Required.
+- `VAULT_AUTH_FILE` - If specified, this file will be sourced. This file can
+  contain VAULT_TOKEN or VAULT_USER and VAULT_PASSWORD.
 - `VAULT_TOKEN` - If specified, the token will be used for auth.
 - `VAULT_USER` - If `VAULT_TOKEN` is unset, then this needs to be set.
 - `VAULT_PASSWORD` - Required if `VAULT_TOKEN` is not being used.
