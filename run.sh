@@ -11,6 +11,7 @@ fi
 : ${VAULT_PKI_PATH:=shared/pki}
 : ${VAULT_ROLE_NAME:=cert-request}
 : ${CERT_COMMON_NAME:=localhost}
+: ${IP_SAN:=$(hostname -i)}
 
 : ${IMPORT_SYSTEM_TRUSTSTORE:=true}
 : ${TRUSTSTORE_FILE:=truststore.jks}
@@ -44,7 +45,7 @@ function request_cert() {
   echo 'Requesting a certificate.'
   curl -L -f -s -k -H "X-Vault-Token: ${VAULT_TOKEN}" \
     ${VAULT_ADDR}/v1/${VAULT_PKI_PATH}/issue/${VAULT_ROLE_NAME} \
-    -d "{\"common_name\": \"${CERT_COMMON_NAME}\", \"ip_sans\": \"$(hostname -i),127.0.0.1\"}" > response.json
+    -d "{\"common_name\": \"${CERT_COMMON_NAME}\", \"ip_sans\": \"${IP_SAN},127.0.0.1\"}" > response.json
   if [[ $? != 0 ]]; then
     echo 'Unable to fetch a certificate.'
     exit 1
@@ -72,13 +73,18 @@ function create_truststore() {
 
 function create_keystore() {
   echo 'Creating a temporary pkcs12 keystore.'
-  openssl pkcs12 -export -name cert -in cert.pem -inkey key.pem -CAfile ca.pem \
-    -out keystore.p12 -passout pass:
+  cat ca.pem cert.pem > bundle.pem
+  openssl pkcs12 -export -name cert -in bundle.pem -inkey key.pem -nodes \
+    -CAfile ca.pem -out keystore.p12 -passout pass:
 
   echo "Creating a JAVA keystore as ${KEYSTORE_FILE}."
   keytool -importkeystore -destkeystore ${KEYSTORE_FILE} \
     -srckeystore keystore.p12 -srcstoretype pkcs12 \
     -alias cert -srcstorepass '' -noprompt -storepass changeit
+
+  # Change private key password from '' to changeit
+  # FIXME: Maybe there is a better way to do that in the above steps
+  keytool -keypasswd -new changeit -keystore ${KEYSTORE_FILE} -storepass changeit -alias cert -keypass ''
 }
 
 

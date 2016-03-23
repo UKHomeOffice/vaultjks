@@ -15,6 +15,7 @@ A working vault server and PKI backend mounted with long enough TTLs.
 - `VAULT_PKI_PATH` - Vault pki backend mount path. Default: `shared/pki`.
 - `VAULT_ROLE_NAME` - Vault pki backend role for requesting a new cert. Default: `cert-request`.
 - `CERT_COMMON_NAME` - Certificate request CN. Default: `localhost`.
+- `IP_SAN` - IP address to add to ip_sans. Default: `$(hostname -i)`.
 - `IMPORT_SYSTEM_TRUSTSTORE`: If `true`, import `/etc/pki/java/cacerts` into a `TRUSTSTORE_FILE`. Default: `true`.
 - `TRUSTSTORE_FILE` - Where to write truststore file. Default: `truststore.jks`.
 - `KEYSTORE_FILE` - Where to write keystore file. Default: `keystore.jks`.
@@ -26,5 +27,5 @@ $ docker run -ti \
   -e VAULT_ADDR=https://vault:8200 \
   -e VAULT_TOKEN=44eecf54-5b01-4bd5-a8c4-f4032b9e7e10 \
   -v /keystore:/data \
-  quay.io/ukhomeofficedigital/vaultjks:v0.0.1
+  quay.io/ukhomeofficedigital/vaultjks:v0.0.2
 ```
