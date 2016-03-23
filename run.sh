@@ -100,3 +100,7 @@ fetch_ca_cert
 request_cert
 create_truststore
 create_keystore
+
+if [[ ${?} == 0 ]] && [[ ${SLEEP_FOREVER} == 'true' ]]; then
+  sleep infinity
+fi

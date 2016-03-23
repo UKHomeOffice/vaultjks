@@ -21,6 +21,9 @@ A working vault server and PKI backend mounted with long enough TTLs.
 - `IMPORT_SYSTEM_TRUSTSTORE`: If `true`, import `/etc/pki/java/cacerts` into a `TRUSTSTORE_FILE`. Default: `true`.
 - `TRUSTSTORE_FILE` - Where to write truststore file. Default: `truststore.jks`.
 - `KEYSTORE_FILE` - Where to write keystore file. Default: `keystore.jks`.
+- `SLEEP_FOREVER` - If set to `true`, `run.sh` will sleep forever after it
+  successfully created keystores. This can be useful if vaultjks is run as part
+  of a kubernetes pod.
 
 
 ### Running
@@ -29,5 +32,5 @@ $ docker run -ti \
   -e VAULT_ADDR=https://vault:8200 \
   -e VAULT_TOKEN=44eecf54-5b01-4bd5-a8c4-f4032b9e7e10 \
   -v /keystore:/data \
-  quay.io/ukhomeofficedigital/vaultjks:v0.0.2
+  quay.io/ukhomeofficedigital/vaultjks:v0.0.4
 ```
