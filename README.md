@@ -18,6 +18,9 @@ A working vault server and PKI backend mounted with long enough TTLs.
 - `VAULT_ROLE_NAME` - Vault pki backend role for requesting a new cert. Default: `cert-request`.
 - `CERT_COMMON_NAME` - Certificate request CN. Default: `localhost`.
 - `IP_SAN` - IP address to add to ip_sans. Default: `$(hostname -i)`.
+- `ALT_NAMES` - Requested Subject Alternative Names, in a comma-delimited list.
+  These can be host names or email addresses; they will be parsed into their
+  respective fields.
 - `IMPORT_SYSTEM_TRUSTSTORE`: If `true`, import `/etc/pki/java/cacerts` into a `TRUSTSTORE_FILE`. Default: `true`.
 - `TRUSTSTORE_FILE` - Where to write truststore file. Default: `truststore.jks`.
 - `KEYSTORE_FILE` - Where to write keystore file. Default: `keystore.jks`.

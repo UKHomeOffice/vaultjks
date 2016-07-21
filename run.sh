@@ -16,6 +16,7 @@ fi
 : ${VAULT_ROLE_NAME:=cert-request}
 : ${CERT_COMMON_NAME:=localhost}
 : ${IP_SAN:=$(hostname -i)}
+: ${ALT_NAMES:=}
 
 : ${IMPORT_SYSTEM_TRUSTSTORE:=true}
 : ${TRUSTSTORE_FILE:=truststore.jks}
@@ -49,7 +50,10 @@ function request_cert() {
   echo 'Requesting a certificate.'
   curl -L -s -k -H "X-Vault-Token: ${VAULT_TOKEN}" \
     ${VAULT_ADDR}/v1/${VAULT_PKI_PATH}/issue/${VAULT_ROLE_NAME} \
-    -d "{\"common_name\": \"${CERT_COMMON_NAME}\", \"ip_sans\": \"${IP_SAN},127.0.0.1\"}" > response.json
+    -d "{\"common_name\": \"${CERT_COMMON_NAME}\",\
+         \"ip_sans\": \"${IP_SAN},127.0.0.1\", \
+         \"alt_names\": \"${ALT_NAMES}\"}" \
+    > response.json
   if [[ $? != 0 ]]; then
     echo 'Unable to fetch a certificate.'
     cat response.json
