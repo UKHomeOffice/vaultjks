@@ -47,11 +47,12 @@ function fetch_ca_cert() {
 
 function request_cert() {
   echo 'Requesting a certificate.'
-  curl -L -f -s -k -H "X-Vault-Token: ${VAULT_TOKEN}" \
+  curl -L -s -k -H "X-Vault-Token: ${VAULT_TOKEN}" \
     ${VAULT_ADDR}/v1/${VAULT_PKI_PATH}/issue/${VAULT_ROLE_NAME} \
     -d "{\"common_name\": \"${CERT_COMMON_NAME}\", \"ip_sans\": \"${IP_SAN},127.0.0.1\"}" > response.json
   if [[ $? != 0 ]]; then
     echo 'Unable to fetch a certificate.'
+    cat response.json
     exit 1
   fi
 
