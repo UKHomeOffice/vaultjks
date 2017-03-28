@@ -54,7 +54,7 @@ function request_cert() {
          \"ip_sans\": \"${IP_SAN},127.0.0.1\", \
          \"alt_names\": \"${ALT_NAMES}\"}" \
     > response.json
-  if [[ $? != 0 ]]; then
+  if [[ $? != 0 ]] || [[ "true" -eq "$(jq 'has("errors")' -r < response.json)" ]]; then
     echo 'Unable to fetch a certificate.'
     cat response.json
     exit 1
