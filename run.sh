@@ -82,7 +82,7 @@ function create_truststore() {
 
 function create_keystore() {
   echo 'Creating a temporary pkcs12 keystore.'
-  cat ca.pem cert.pem > bundle.pem
+  cat cert.pem ca.pem > bundle.pem
   openssl pkcs12 -export -name cert -in bundle.pem -inkey key.pem -nodes \
     -CAfile ca.pem -out keystore.p12 -passout pass:
 
